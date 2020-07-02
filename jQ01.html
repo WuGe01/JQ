@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./plugins/jquery-3.5.1.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="page">
+        <h1 id="hearder">東京香蕉芭娜娜電視台</h1>
+        <h2>節目表-神奇動物篇</h2>
+        <div id="list">
+        <ul>
+            <li id="one" class="hot"><b>非洲</b>肯德基獅子王</li>
+            <li id="two" class="hot">北海巧克力魷魚王</li>
+            <li id="three" class="hot">西伯利亞炸薯條狼</li>
+            <li id="four">南洋群島芒果蜥蜴</li>
+        </ul>
+        </div>
+    </div>
+    <input type="button" value="按鈕"><br>
+    <input type="button" value="無文" onclick="aaa()"><br>
+    <input type="text" value="文字"><br>
+    <input type="text" value="文字串"><br>
+    <textarea name="" id="" cols="30" rows="10">內容</textarea><br>
+    <select name="" id="">
+        <option value="">1</option>
+        <option value="" selected>2</option>
+        <option value="">3</option>
+    </select>
+    <input type="radio" name="sex" id="" checked>BL
+    <input type="radio" name="sex" id="" >GL
+</body>
+<script>
+function aaa() {
+    alert(132)
+}
+$('#one').on('click',()=>{
+    alert("jqqq")
+})
+$('#three').click(()=>{
+    alert("three")
+})
+$('#three').hover(()=>{
+    console.log(111111)
+})
+</script>
+</html>
