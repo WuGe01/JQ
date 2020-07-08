@@ -1,49 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./slick/slick.css">
-    <link rel="stylesheet" href="./slick/slick-theme.css">
-    <script src="./plugins/jquery-3.5.1.js"></script>
-    <script src="./slick/slick.js"></script>
-    <title>Document</title>
-    <style>
-        body{
-            background-color: #333;
-            color: white;
-        }
-        #main{
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            height: 100vh;
-            align-items: center;
-            text-align: center;
-        }
-        .min-img{
-            width: 90px;
-            padding: 0 5px;
-            cursor: pointer;
-        }
-        .control{
-            width: 400px;
-            margin: 10px 30px;
-        }
-        #box{
-            width: 100%;
-            flex: 0 0 480px;
-            overflow: hidden;
-        }
-        #nav_zone{
-            position: relative;
-            transform: scale(1);
-            transition:transform 0.5s;
-        }
-        #nav_zone.scale{
-            transform: scale(0);
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="./slick/slick.css">
+<link rel="stylesheet" href="./slick/slick-theme.css">
+<script src="./plugins/jquery-3.5.1.js"></script>
+<script src="./slick/slick.js"></script>
+<title>Document</title>
+<style>
+    body{
+        background-color: #333;
+        color: white;
+    }
+    #main{
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        height: 100vh;
+        align-items: center;
+        text-align: center;
+    }
+    .min-img{
+        width: 90px;
+        padding: 0 5px;
+        cursor: pointer;
+    }
+    .control{
+        width: 400px;
+        margin: 10px 30px;
+    }
+    #box{
+        width: 100%;
+        flex: 0 0 480px;
+        overflow: hidden;
+    }
+    #nav_zone{
+        position: relative;
+        transform: scale(1);
+        transition:transform 0.5s;
+    }
+    #nav_zone.scale{
+        transform: scale(0);
+    }
+</style>
 </head>
 <body>
     <div id="main">
@@ -56,7 +56,7 @@
         </div>
         <div class="control"></div>
     <script>
-        let effect=0,myimg=new Object();
+        let effect=0,myimg=new Object(),pause=null;
         $.getJSON("data.json",function (e) {
             console.log(e);
             effect=e.q3t4.effect
@@ -125,8 +125,8 @@
        
         function autoplay(e) {
             let nowNum=Object.keys(myimg).indexOf(e);
-            setInterval(() => {
-                nowNum=nowNum+1%Object.keys(myimg).length;
+            pause=setInterval(() => {
+                nowNum=(nowNum+1)%Object.keys(myimg).length;
                 let key=Object.keys(myimg)[nowNum];
                 console.log(`PIC:${key}`)
                 swap(key)
