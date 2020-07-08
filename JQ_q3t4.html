@@ -3,7 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./slick/slick.css">
+    <link rel="stylesheet" href="./slick/slick-theme.css">
     <script src="./plugins/jquery-3.5.1.js"></script>
+    <script src="./slick/slick.js"></script>
     <title>Document</title>
     <style>
         body{
@@ -23,6 +26,23 @@
             padding: 0 5px;
             cursor: pointer;
         }
+        .control{
+            width: 400px;
+            margin: 10px 30px;
+        }
+        #box{
+            width: 100%;
+            flex: 0 0 480px;
+            overflow: hidden;
+        }
+        #nav_zone{
+            position: relative;
+            transform: scale(1);
+            transition:transform 0.5s;
+        }
+        #nav_zone.scale{
+            transform: scale(0);
+        }
     </style>
 </head>
 <body>
@@ -34,26 +54,83 @@
                 <p>片名</p>
             </div>
         </div>
-        <div class="control">
-
-        </div>
-    </div>
+        <div class="control"></div>
     <script>
         let effect=0,myimg=new Object();
         $.getJSON("data.json",function (e) {
             console.log(e);
             effect=e.q3t4.effect
             myimg=e.q3t4.img
-            todo() 
-        })
-        function todo() {
             for (const key in myimg) {
                 $(".control").append(
-                   ` <img src="./${myimg[key]}" class="min-img" alt='${key}'>`
+                   ` <div><img src="./${myimg[key]}" class="min-img" alt='${key}'></div>`
                 );               
             }
             $("#nav_zone").find("img").attr("src",myimg[Object.keys(myimg)[0]]);
             $("#nav_zone").find("p").text(Object.keys(myimg)[0])
+            $('.control').slick({
+                infinite: true,
+                slidesToShow: 4,
+                slidesToScroll: 4,
+                dots:true
+            });
+            $(".min-img").click(function () {
+                swap($(this).attr("alt"))
+            });
+            autoplay(Object.keys(myimg)[0])
+        })
+        function swap(e) { 
+            switch (effect){
+                case 1:
+                    console.log(1)
+                    $("#nav_zone").fadeToggle(function () {
+                        $(this).find("img").attr("src",myimg[e])
+                        $(this).find("p").text(e)
+                        $(this).fadeToggle()
+                    });
+                    break;
+                case 2:
+                    console.log(2)
+                    $("#nav_zone").slideToggle(function () {
+                        $(this).find("img").attr("src",myimg[e])
+                        $(this).find("p").text(e)
+                        $(this).slideToggle()
+                    });
+                    break;
+                case 3:
+                    console.log(3)
+                    $("#nav_zone").toggleClass("scale");
+                    setTimeout(()=>{
+                        $("#nav_zone").find("img").attr("src",myimg[e])
+                        $("#nav_zone").find("p").text(e)
+                        $("#nav_zone").toggleClass("scale")
+                    },500)
+                 
+                    break;
+                case 4:
+                    console.log(4)
+                    $("#nav_zone").animate({
+                        left:"-150%"
+                    },function () {
+                        $(this).find("img").attr("src",myimg[e])
+                        $(this).find("p").text(e)
+                        $(this).css("left","150%").animate({
+                            left:"0"
+                        })
+                    })
+                    break;
+  
+            }
+        }
+       
+        function autoplay(e) {
+            let nowNum=Object.keys(myimg).indexOf(e);
+            setInterval(() => {
+                nowNum=nowNum+1%Object.keys(myimg).length;
+                let key=Object.keys(myimg)[nowNum];
+                console.log(`PIC:${key}`)
+                swap(key)
+            }, 2000);
         }
     </script>
 </body>
