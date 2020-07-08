@@ -76,6 +76,8 @@
             });
             $(".min-img").click(function () {
                 swap($(this).attr("alt"))
+                clearInterval(pause)
+                autoplay(Object.keys(myimg)[0])
             });
             autoplay(Object.keys(myimg)[0])
         })
