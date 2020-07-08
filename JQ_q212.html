@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./plugins/jquery-3.5.1.js"></script>
+    <title>Document</title>
+    <style>
+        .swww{
+            
+        }
+    </style>
+</head>
+<body>
+    <table border="1" width="100%">
+        <tr>
+            <td width="30%">標題</td>
+            <td width="70%">內容</td>
+        </tr>
+    </table>
+<div id="alt" style="position: absolute; width: 350px; min-height: 100px; word-break:break-all; text-align:justify;  background-color: rgb(255, 255, 204); top: 50px; left: 400px; z-index: 99; display: none; padding: 5px; border: 3px double rgb(255, 153, 0); background-position: initial initial; background-repeat: initial initial;">
+<div class="a11"></div>
+</div>   
+<script>
+hghtry()
+$('.swww').hover(function () {
+    console.log(1)
+    $('#alt').html(
+        $(this).children('.all').html()
+    ).css({
+        "top":$(this).offset().top+30,
+        "left":$(this).offset().left+20
+    }).show();
+    $('.swww').mouseout(()=>{
+        $('#alt').hide();
+    });
+})
+function hghtry() {
+    $.getJSON("./data.json",function (re) {
+    console.log(re);
+});
+}
+$.getJSON("data.json",function (re) {
+    console.log(re)
+    todo(re.q2t12);
+});
+function todo(e) {
+    for(const key in e){
+        $("table").append(`<tr>
+            <td>${key}</td>
+            <td  class="swww">
+              <span style="pointer-event:none">${e[key].substr(0,20)}...</span>  
+              <span style="display: none;" class='all'>${e[key]}</span>  
+            </td>
+        <tr>`);
+    }
+}
+</script>
+</body>
+</html>
