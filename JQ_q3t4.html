@@ -5,13 +5,32 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="./plugins/jquery-3.5.1.js"></script>
     <title>Document</title>
+    <style>
+        body{
+            background-color: #333;
+            color: white;
+        }
+        #main{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 100vh;
+            align-items: center;
+            text-align: center;
+        }
+        .min-img{
+            width: 90px;
+            padding: 0 5px;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <div id="main">
         <h1>預告片介紹</h1>
         <div id="box">
             <div id="nav_zone">
-                <img src="" alt="">
+                <img src="./img/03A01.jpg" alt="">
                 <p>片名</p>
             </div>
         </div>
@@ -19,5 +38,23 @@
 
         </div>
     </div>
+    <script>
+        let effect=0,myimg=new Object();
+        $.getJSON("data.json",function (e) {
+            console.log(e);
+            effect=e.q3t4.effect
+            myimg=e.q3t4.img
+            todo() 
+        })
+        function todo() {
+            for (const key in myimg) {
+                $(".control").append(
+                   ` <img src="./${myimg[key]}" class="min-img" alt='${key}'>`
+                );               
+            }
+            $("#nav_zone").find("img").attr("src",myimg[Object.keys(myimg)[0]]);
+            $("#nav_zone").find("p").text(Object.keys(myimg)[0])
+        }
+    </script>
 </body>
 </html>
