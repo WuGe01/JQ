@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../plugins/jquery-3.5.1.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <table width="100%">
+        <thead>
+        <tr>
+            <td>編碼</td>
+            <td>動物名</td>
+            <td>重量</td>
+            <td>簡介</td>
+            <td>更新日期</td>
+            <td>操作</td>
+        </tr>
+        <tr>
+            <td colspan="6"><hr></td>
+        </tr>
+        </thead>
+        <tbody></tbody>
+        <tfoot>
+            <tr>
+                <td colspan="6" style="text-align: center;">
+                    <hr>
+                    <input type="button" value="新增">
+                    <input type="button" onclick="todo()" value="更多">
+                </td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <script>
+        let start=0;
+        todo()
+        function todo() {
+            $.post("./api.php?do=select",{start},(e)=>{
+                if(e!='fail'){
+                    $("tbody").append(e)
+                    start+=10;
+                    $(".mdy").click(chkinput)
+                }else alert("已無資料")
+            });
+        }
+        function del(e) {
+            console.log("del")
+        }
+        function chkinput() {
+           let id=$(this).parents('tr').children('td').eq(0).html()
+           let name=$(this).parents('tr').children('td').eq(1).html()
+           let weight=$(this).parents('tr').children('td').eq(2).html()
+           let info=$(this).parents('tr').children('td').eq(3).html()
+           $(this).parents('tr').children('td').eq(0).html(`<input type="hidden" name="id" value="${id}">${id}`)
+           $(this).parents('tr').children('td').eq(1).html(`<input name="name" value="${name}">`)
+           $(this).parents('tr').children('td').eq(2).html(`<input name="weight" value="${weight}">`)
+           $(this).parents('tr').children('td').eq(3).html(`<input name="info" value="${info}">`)
+           $(this).parents('tr').children('td').eq(5).html(`<input type="button" onclick="save()" value="儲存">`)
+        }
+    </script>
+</body>
+</html>
