@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./plugins/jquery-3.5.1.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <form action="check_q3t5.php" method="POST" style="text-align: center">
+        <h3>預告片清單</h3>
+        <table border="1" style="margin: auto;;">
+            <thead>
+                <tr>
+                    <td>預告片海報</td>
+                    <td>預告片片名</td>
+                    <td>播放順序</td>
+                    <td>操作</td>
+                </tr>
+            </thead>
+            <tbody>
+                
+            </tbody>
+        </table>
+        <div style="margin-top: 10px;"><input type="submit" value="編輯"></div>
+    </form>
+<script>
+     $.getJSON("./data.json",(e)=>{
+        for(const item of e.q3t5){
+              $("tbody").append(`
+                 <tr>
+                         <td>
+                             <img src="${item.img}" alt="" width="100px">
+                         </td>
+                         <td>${item.text}</td>
+                         <td>
+                             <input type="button" value="上移" class="up">
+                             <input type="button" value="下移" class="down">
+                         </td>
+                         <td>
+                             <input type="hidden" name="odr[${item.text}]" value="${item.odr}">
+                             <input type="checkbox" name="" id="">顯示
+                             <input type="checkbox" name="" id="">刪除
+                         </td>
+                     </tr>
+              `)}
+              $("input:button").click(function(){
+                //   console.log(this)
+                  let nodeself=$(this).parents("tr");
+                  let nodeTarget=null;
+                  let valSelf=nodeself.find("input:hidden").val();
+                  switch (this.className) {
+                      case "up":
+                      nodeTarget=$(this).parents("tr").prev();
+                      if(valSelf != "1"){
+                          let valTarget=nodeTarget.find("input:hidden").val();
+                          nodeself.find("input:hidden").val(valTarget);
+                          nodeTarget.find("input:hidden").val(valSelf);
+                          nodeself.insertBefore(nodeTarget);
+                      }
+                          break;
+                      case "down":
+                      nodeTarget=$(this).parents("tr").next();  
+                      if(valSelf != e.q3t5.length){
+                        let valTarget=nodeTarget.find("input:hidden").val();
+                          nodeself.find("input:hidden").val(valTarget);
+                          nodeTarget.find("input:hidden").val(valSelf);
+                          nodeself.insertAfter(nodeTarget);
+                      }
+                          break;
+                  }
+              })      
+     })
+</script>
+</body>
+</html>

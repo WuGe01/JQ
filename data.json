@@ -33,6 +33,31 @@
             "03A04":"./img/03A04.jpg",
             "03A05":"./img/03A05.jpg",
             "03A06":"./img/03A06.jpg"
-        }
-    }
+        }   
+    },
+    "q3t5":[{
+        "img":"./img/03A01.jpg",
+        "text":"03A01",
+        "odr":1
+    },{
+        "img":"./img/03A02.jpg",
+        "text":"03A02",
+        "odr":2
+    },{
+        "img":"./img/03A03.jpg",
+        "text":"03A03",
+        "odr":3
+    },{
+        "img":"./img/03A04.jpg",
+        "text":"03A04",
+        "odr":4
+    },{
+        "img":"./img/03A05.jpg",
+        "text":"03A05",
+        "odr":5
+    },{
+        "img":"./img/03A06.jpg",
+        "text":"03A06",
+        "odr":6
+    }]
 }
