@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="./plugins/jquery-3.5.1.js"></script>
+    <title>Document</title>
+    <style>
+        a{
+            display: block;
+            padding: 20px 5px;
+        }
+        .fa,.son{
+            width: 200px;
+            text-align: center;
+            margin: 1px auto;
+            text-decoration: none;
+            color: #000;
+            font-size: larger;
+        }
+        .fa{
+            background-color: chocolate;
+        }
+        .son{
+            background-color: burlywood;
+
+        }
+
+    </style>
+</head>
+<body>
+    <div class="menu">
+        
+
+    </div>
+
+
+<script>
+$.getJSON("./data.json",function (e) {
+    todo(e.q4t4)
+})
+function todo(e) {
+    let total=0;  
+    for (let i = 0; i < e.length; i++) {
+        let faNum=0,print="";
+       
+        for (let j = 0; j < e[i].sub.length; j++) {
+            print+=`<a href="#" class="fa${e[i].id} son" id="${e[i].sub[j].id}" >${e[i].sub[j].title}(${e[i].sub[j].count})</a>`;  
+            faNum+=e[i].sub[j].count;
+        }
+        total+=faNum;
+        
+        $('.menu').append(`<a href="#" id="fa${e[i].id}" class="fa">${e[i].title}(${faNum})</a>`)
+        $('.menu').append(print);
+    }
+    $('.menu').prepend(`<a href="#" class="fa">全部商品(${total})</a>`)
+
+    $(".son").hide()
+    $(".fa").mouseover(function () {
+        let kk=$(this).attr("id")
+        $(`.${kk}`).slideDown()
+        $(".son").not(`.${kk}`).slideUp()
+    })
+}
+</script>
+</body>
+</html>
