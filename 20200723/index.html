@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../plugins/jquery-3.5.1.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <form action="">
+     電影：<select name="mm" id="sm"></select>
+     日期：<select name="dd" id="sd"></select>
+     場次：<select name="tt" id="st"></select>
+     <input type="submit" value="確認">
+    </form>
+    
+    <script>
+        $.post("api.php?do=getmovie",(e)=>{
+        // let aa=JSON.parse(e)
+        //   console.log(e)
+            for (const row of e) {
+                $('#sm').append(`<option value='${row['id']}'>${row['movie']}</option>`)
+            }
+            chgsd(()=>{chgst()})
+            
+        },"JSON")
+        $("#sm").on("change",function(){
+            chgsd()
+        })
+        $("#sd").on("change",function(){
+            chgst()
+        })
+
+        function chgsd() {
+            let mv=$('#sm').val()
+            $('#sd').html("")
+            $.get("api.php",{do:"getdate",id:mv},(e)=>{    
+                for (const row of e) {
+                    $('#sd').append(`<option value='${row['id']}'>${row['date']}</option>`)
+                }
+            },"JSON")   
+        }
+        
+        function chgst() {
+            let dv=$('#sd').val()
+            $('#st').html("")
+            $.get("api.php",{do:"gettime",id:dv},(e)=>{
+                for (const row of e) {
+                    $('#st').append(`<option value='${row['id']}'>${row['time']}</option>`)
+                }
+            },"JSON")
+        }
+
+
+
+        // $.getJSON("api.php?do=getmovie",(e)=>{
+        //   console.log(e)
+        // })
+    </script>
+</body>
+</html>
