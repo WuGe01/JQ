@@ -21,11 +21,13 @@
             for (const row of e) {
                 $('#sm').append(`<option value='${row['id']}'>${row['movie']}</option>`)
             }
-            chgsd(()=>{chgst()})
+            chgsd()
             
         },"JSON")
+
         $("#sm").on("change",function(){
             chgsd()
+            
         })
         $("#sd").on("change",function(){
             chgst()
@@ -37,16 +39,26 @@
             $.get("api.php",{do:"getdate",id:mv},(e)=>{    
                 for (const row of e) {
                     $('#sd').append(`<option value='${row['id']}'>${row['date']}</option>`)
+                    chgst()
                 }
             },"JSON")   
         }
         
         function chgst() {
             let dv=$('#sd').val()
+            let timeDay=new Date()
+            let isSelect=new Date($('#sd>option:selected').text())
+            let timeLine=Math.floor(timeDay.getHours()/2)-4;
             $('#st').html("")
+            let dataObj=[{text:"10:00-12:00",ticket:20},{text:"12:00-14:00",ticket:20},{text:"14:00-16:00",ticket:20},{text:"16:00-18:00",ticket:20},{text:"18:00-20:00",ticket:20},{text:"20:00-22:00",ticket:20},{text:"22:00-24:00",ticket:20}];
             $.get("api.php",{do:"gettime",id:dv},(e)=>{
+                let count=0;
                 for (const row of e) {
-                    $('#st').append(`<option value='${row['id']}'>${row['time']}</option>`)
+                    count++
+                    if(count<=timeLine && isSelect.toDateString()==timeDay.toDateString()) continue;
+                    dataObj[row['time']-1].ticket-=row['sellout']
+                    $('#st').append(`<option value='${row['id']}'>${dataObj[row['time']-1]['text']} 剩下票數 ${(dataObj[row['time']-1].ticket)}</option>`)
+                    
                 }
             },"JSON")
         }

@@ -5,12 +5,12 @@ $movieName = array(
   array("id" => 3, "movie" => "電影名稱 C"),
 );
 $movieDay = array(
-  array("id" => 1, "movieName" => 1, "date" => "2020-05-05"),
-  array("id" => 2, "movieName" => 1, "date" => "2020-05-06"),
-  array("id" => 3, "movieName" => 2, "date" => "2020-05-06"),
-  array("id" => 4, "movieName" => 2, "date" => "2020-05-07"),
-  array("id" => 5, "movieName" => 3, "date" => "2020-05-07"),
-  array("id" => 6, "movieName" => 3, "date" => "2020-05-08")
+  array("id" => 1, "movieName" => 1, "date" => "2020-07-23"),
+  array("id" => 2, "movieName" => 1, "date" => "2020-07-26"),
+  array("id" => 3, "movieName" => 2, "date" => "2020-07-26"),
+  array("id" => 4, "movieName" => 2, "date" => "2020-07-27"),
+  array("id" => 5, "movieName" => 3, "date" => "2020-07-27"),
+  array("id" => 6, "movieName" => 3, "date" => "2020-07-28")
 );
 $movieOrder = array(
   array("id" => 1, "movieDay" => 1, "time" => 2, "sellout" => 2),
