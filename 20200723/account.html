@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../plugins/jquery-3.5.1.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <h1>註冊帳號</h1>
+    <form action="aa.php"  onsubmit="return checkflag()">
+        姓名:<input type="text" name="name"><br>
+        帳號:<input type="text" name="acc"><input type="button" value="檢測帳號" onclick="check()"><br>
+        密碼:<input type="text" name="pw"><br>
+        <input type="submit" value="註冊">
+    </form>
+    <script>
+        function check() {
+        let acc=$('input[name=acc]').val();
+            $.post("acc.php?do=check",{acc},(e)=>{
+                alert(e)
+            })
+        }
+        function checkflag() {
+        let acc=$('input[name=acc]').val();
+            $.post("acc.php?do=check",{acc},(e)=>{
+                if(e=="帳號重複"){
+                    alert('請先認證帳號');
+                    return false;
+                }
+            })
+        }
+    </script>
+</body>
+</html>
