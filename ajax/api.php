@@ -32,7 +32,7 @@ switch ($_GET['do']) {
   case 'update':
     $sql = "UPDATE ajax_animal SET name='" . $_POST['name'] . "',weight='" . $_POST['weight'] . "',info='" . $_POST['info'] . "',date=NOW() WHERE id=" . $_POST['id'];
     $result = $db->query($sql);
-    // 成功時，我們 HTML 生成所需要的更新日期之文字，透過 Ajax 回傳給前端
+    // // 成功時，我們 HTML 生成所需要的更新日期之文字，透過 Ajax 回傳給前端
     if ($result) echo date("Y-m-d H:i:s");
     // if($result) echo "OK";
     break;

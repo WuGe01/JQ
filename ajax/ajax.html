@@ -5,8 +5,40 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <script src="../plugins/jquery-3.5.1.js"></script>
     <title>Document</title>
+    <style>
+        .insertZone{
+            position: fixed;
+            background: #333A;
+            width: 100%;
+            height: 100%;
+            left: 0;
+            top: 0;
+            color: #eee;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-basis: 50%;
+            font-weight: bold;
+            text-align: center; 
+        }
+
+    </style>
 </head>
 <body>
+    <div class="insertZone" style="display: none;">
+        <form>
+            <h1>新增動物</h1>
+            <hr><br>
+            動物：<input type="text" name="name" value=""><br><br>
+            重量：<input type="text" name="weight" value=""><br><br>
+            簡介：<input type="text" name="info" value=""><br><br>
+            <hr>
+            <div>
+                <input type="button" onclick="insert(this)"  value="新增">
+                <input type="button" onclick="clearinsertZone()"  value="取消">
+            </div>
+        </form>
+    </div>
     <table width="100%">
         <thead>
         <tr>
@@ -26,7 +58,7 @@
             <tr>
                 <td colspan="6" style="text-align: center;">
                     <hr>
-                    <input type="button" value="新增">
+                    <input type="button" onclick="active()" value="新增">
                     <input type="button" onclick="todo()" value="更多">
                 </td>
             </tr>
@@ -36,6 +68,13 @@
     <script>
         let start=0;
         todo()
+        function insert(e) {
+            let data=$(e).parents('form').find('input').serialize();
+            $.post("./api.php?do=insert",data,(k)=>{
+                clearinsertZone()
+                if(k==inserted)alert("已新增")
+            })
+        }
         function todo() {
             $.post("./api.php?do=select",{start},(e)=>{
                 if(e!='fail'){
@@ -46,7 +85,10 @@
             });
         }
         function del(e) {
-            console.log("del")
+            let id=$(e).parents('tr').children('td').eq(0).text()
+            $.post("api.php?do=delete",{id},(k)=>{
+                if(k==deleted)$(e).parents('tr').remove() 
+            })
         }
         function chkinput() {
            let id=$(this).parents('tr').children('td').eq(0).html()
@@ -57,7 +99,29 @@
            $(this).parents('tr').children('td').eq(1).html(`<input name="name" value="${name}">`)
            $(this).parents('tr').children('td').eq(2).html(`<input name="weight" value="${weight}">`)
            $(this).parents('tr').children('td').eq(3).html(`<input name="info" value="${info}">`)
-           $(this).parents('tr').children('td').eq(5).html(`<input type="button" onclick="save()" value="儲存">`)
+           $(this).parents('tr').children('td').eq(5).html(`<input type="button" onclick="save(this)" value="儲存">`)
+        }
+        function save(e) {
+            let id=$(e).parents('tr').children('td').eq(0).find('input').val()
+            let name=$(e).parents('tr').children('td').eq(1).find('input').val()
+            let weight=$(e).parents('tr').children('td').eq(2).find('input').val()
+            let info=$(e).parents('tr').children('td').eq(3).find('input').val()
+            let data=$(e).parents('tr').find('input').serialize();
+            $.post("api.php?do=update",data,(k)=>{
+                $(e).parents('tr').children('td').eq(0).html(`${id}`)
+                $(e).parents('tr').children('td').eq(1).html(`${name}`)
+                $(e).parents('tr').children('td').eq(2).html(`${weight}`)
+                $(e).parents('tr').children('td').eq(3).html(`${info}`)
+                $(e).parents('tr').children('td').eq(5).html(`<button class="mdy">修改</button><button onclick="del(this)">刪除</button>`)
+                $(e).parents('tr').children('td').eq(4).html(k)
+                $(".mdy").click(chkinput)
+            })
+        }
+        function active() {
+            $('.insertZone').fadeIn();
+        }
+        function clearinsertZone() {
+            $('.insertZone').fadeOut();
         }
     </script>
 </body>
