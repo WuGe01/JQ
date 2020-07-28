@@ -11,10 +11,9 @@
 <body>
     <div style="width: 800px;height: 300px;"><canvas id="myChart0" width="8" height="3"></canvas></div>
 <script>
+    let date="";
+    let link="https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/F-D0047-091?Authorization=CWB-9F8AE714-2BC7-4414-9D20-CFDAC24DA0C3&downloadType=WEB&format=JSON"
 
-
-let date="";
-        let link="https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/F-D0047-091?Authorization=CWB-9F8AE714-2BC7-4414-9D20-CFDAC24DA0C3&downloadType=WEB&format=JSON"
         $.getJSON(link).done((e)=>{
         console.log(e)
         date=e.cwbopendata.dataset.locations.location
@@ -22,20 +21,35 @@ let date="";
         let nt=date[18]
         let kl=date[13]
         let tu=date[21]
-        let p=new Array(),t=new Array(),k=new Array(),u=new Array()
+        let p=new Array(),t=new Array(),k=new Array(),u=new Array(),timeline=new Array()
         for (let i = 0; i < tp.weatherElement[0].time.length; i+=2) {
             p.push(tp.weatherElement[0].time[i].elementValue.value)    
             t.push(nt.weatherElement[0].time[i].elementValue.value)    
             k.push(kl.weatherElement[0].time[i].elementValue.value)    
             u.push(tu.weatherElement[0].time[i].elementValue.value)    
+            timeline.push(tp.weatherElement[0].time[i].startTime.substr(0,10))
         }
+        let findmin=Math.min.apply(null,[
+            Math.min.apply(null,p),
+            Math.min.apply(null,t),
+            Math.min.apply(null,k),
+            Math.min.apply(null,u)])
+
+        let findmax=Math.max.apply(null,[
+            Math.max.apply(null,p),
+            Math.max.apply(null,t),
+            Math.max.apply(null,k),
+            Math.max.apply(null,u)])
+        
+        console.log(findmin,findmax)
+
 
 
         let ctx = document.getElementById('myChart0');
         let myChart0 = new Chart(ctx, {
         type: 'line',
         data: {
-        labels: ['0728', '0729', '0730', '0731', '0801','0802' ,'0803'],
+        labels: timeline,
         datasets: [{
             label: tp.locationName,
             data: p,
@@ -58,11 +72,16 @@ let date="";
             borderColor: ['rgba(53, 52, 205, 1)'],
             borderWidth: 4}]},
             options: {
-            plugins: {
-            filler: {
-                propagate: true
-             }
-             }
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                             max: findmax+0.5,
+                             min: findmin-0.5,
+                             stepSize: 0.5
+                            }
+                            }]
+                        }
+
             }
         });
 
