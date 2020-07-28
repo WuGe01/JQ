@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" integrity="sha512-/zs32ZEJh+/EO2N1b0PEdoA10JkdC3zJ8L5FTiQu82LR9S/rOQNfQN7U59U9BC12swNeRAz3HSzIL2vpp4fv3w==" crossorigin="anonymous" />
+    <script src="../plugins/jquery-3.5.1.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha512-s+xg36jbIujB2S2VKfpGmlC3T5V2TF3lY48DX7u2r9XzGzgPsa6wTpOQA7J9iffvdeBN0q9tKzRxVxw1JviZPg==" crossorigin="anonymous"></script>
+</head>
+<body>
+    <div style="width: 800px;height: 300px;"><canvas id="myChart0" width="8" height="3"></canvas></div>
+<script>
+
+
+let date="";
+        let link="https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/F-D0047-091?Authorization=CWB-9F8AE714-2BC7-4414-9D20-CFDAC24DA0C3&downloadType=WEB&format=JSON"
+        $.getJSON(link).done((e)=>{
+        console.log(e)
+        date=e.cwbopendata.dataset.locations.location
+        let tp=date[16]
+        let nt=date[18]
+        let kl=date[13]
+        let tu=date[21]
+        let p=new Array(),t=new Array(),k=new Array(),u=new Array()
+        for (let i = 0; i < tp.weatherElement[0].time.length; i+=2) {
+            p.push(tp.weatherElement[0].time[i].elementValue.value)    
+            t.push(nt.weatherElement[0].time[i].elementValue.value)    
+            k.push(kl.weatherElement[0].time[i].elementValue.value)    
+            u.push(tu.weatherElement[0].time[i].elementValue.value)    
+        }
+
+
+        let ctx = document.getElementById('myChart0');
+        let myChart0 = new Chart(ctx, {
+        type: 'line',
+        data: {
+        labels: ['0728', '0729', '0730', '0731', '0801','0802' ,'0803'],
+        datasets: [{
+            label: tp.locationName,
+            data: p,
+            backgroundColor: ['rgba(153, 252, 155, 0.4)'],
+            borderColor: ['rgba(153, 252, 155, 1)'],
+            borderWidth: 4},
+        {   label: nt.locationName,
+            data: t,
+            backgroundColor:['rgba(253, 212, 105, 0.4)'],
+            borderColor: ['rgba(253, 212, 105, 1)'],
+            borderWidth: 4},
+        {   label: kl.locationName,
+            data: k,
+            backgroundColor:['rgba(153, 112, 155, 0.4)'],
+            borderColor: ['rgba(153, 112, 155, 1)'],
+            borderWidth: 4},
+        {   label: tu.locationName,
+            data: u,
+            backgroundColor:['rgba(53, 52, 205, 0.4)'],
+            borderColor: ['rgba(53, 52, 205, 1)'],
+            borderWidth: 4}]},
+            options: {
+            plugins: {
+            filler: {
+                propagate: true
+             }
+             }
+            }
+        });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        }).fail((e)=>{console.log("fail")})
+    </script>
+</body>
+</html>
