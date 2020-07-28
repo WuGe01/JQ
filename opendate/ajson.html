@@ -3,12 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.10.21/css/jquery.dataTables.min.css">
     <script src="../plugins/jquery-3.5.1.js"></script>
+    <script src="//cdn.datatables.net/1.10.21/js/jquery.dataTables.min.js"></script>
     <title>Document</title>
+    <style>
+img{
+    width:30px;
+}
+    </style>
 </head>
 <body>
     <h1>36小時 天氣速報</h1>
-    <table>
+    <table id="dt" border="1" style="width:100%;" class="hover compact">
         <thead>
             <tr>
                 <th>編號:</th>
@@ -33,7 +40,7 @@
 
 
     <script>
-        let date;
+        let d1,d2,d3,dat;
         let link="https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/F-C0032-001?Authorization=CWB-9F8AE714-2BC7-4414-9D20-CFDAC24DA0C3&downloadType=WEB&format=JSON";
         // $.ajax({
         //     url:"https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/F-C0032-001?Authorization=CWB-9F8AE714-2BC7-4414-9D20-CFDAC24DA0C3&downloadType=WEB&format=JSON",
@@ -75,7 +82,23 @@
                 `;
             }        
             $("tbody").html(p);
+            d1 = new Date(dat[0].weatherElement[0].time[0].startTime);
+            d2 = new Date(dat[0].weatherElement[0].time[1].startTime);
+            d3 = new Date(dat[0].weatherElement[0].time[2].startTime);
+            let hourtxt=new Array();
+            hourtxt[0]="凌晨";
+            hourtxt[6]="白天";
+            hourtxt[12]="下午";
+            hourtxt[18]="晚上";
+            $("thead").find("th").eq(2).text(`${d1.getFullYear()}-${d1.getMonth()+1}-${d1.getDate()} | ${hourtxt[d1.getHours()]}`);
+            $("thead").find("th").eq(3).text(`${d2.getFullYear()}-${d2.getMonth()+1}-${d2.getDate()} | ${hourtxt[d2.getHours()]}`);
+            $("thead").find("th").eq(4).text(`${d3.getFullYear()}-${d3.getMonth()+1}-${d3.getDate()} | ${hourtxt[d3.getHours()]}`);
+            $("#dt").DataTable();
         })
+
+
+ 
+
     </script>
 </body>
 </html>
