@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="../plugins/jquery-3.5.1.js"></script>
+    <title>Document</title>
+</head>
+<body>
+    <h1>36小時 天氣速報</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>編號:</th>
+                <th>城市:</th>
+                <th>時間1</th>
+                <th>時間2</th>
+                <th>時間3</th>
+            </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
+
+
+
+
+
+
+
+
+
+
+    <script>
+        let date;
+        let link="https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/F-C0032-001?Authorization=CWB-9F8AE714-2BC7-4414-9D20-CFDAC24DA0C3&downloadType=WEB&format=JSON";
+        // $.ajax({
+        //     url:"https://opendata.cwb.gov.tw/fileapi/v1/opendataapi/F-C0032-001?Authorization=CWB-9F8AE714-2BC7-4414-9D20-CFDAC24DA0C3&downloadType=WEB&format=JSON",
+        //     method:"GET",
+        //     dataType:"json",
+        //     success:function(e){
+        //         console.log(e);
+        //         date=e.cwbopendata.dataset.location;
+        //     }
+        // })
+        // $.getJSON(link).done(function(e){date=e.cwbopendata.dataset.location;}).fail(()=>{console.log("fail~~");})
+        
+        $.getJSON(link,(e)=>{
+            let p="";
+            dat=e.cwbopendata.dataset.location;
+            for(let i=0;i<dat.length;i++){
+                let row=dat[i]
+                p+=`
+                <tr>
+                <td>${i+1}</td>
+                <td>${dat[i].locationName}</td>
+                <td>
+                ${dat[i].weatherElement[0].time[0].parameter.parameterName}
+                <img src="./img/day/${dat[i].weatherElement[0].time[0].parameter.parameterValue}.svg" alt="">
+                溫度${dat[i].weatherElement[2].time[0].parameter.parameterName}~${dat[i].weatherElement[1].time[0].parameter.parameterName}
+                </td>
+                <td>
+                ${dat[i].weatherElement[0].time[1].parameter.parameterName}
+                <img src="./img/day/${dat[i].weatherElement[0].time[1].parameter.parameterValue}.svg" alt="">
+                溫度${dat[i].weatherElement[2].time[1].parameter.parameterName}~${dat[i].weatherElement[1].time[1].parameter.parameterName}
+                </td>
+                <td>
+                ${dat[i].weatherElement[0].time[2].parameter.parameterName}
+                <img src="./img/day/${dat[i].weatherElement[0].time[2].parameter.parameterValue}.svg" alt="">
+                溫度${dat[i].weatherElement[2].time[2].parameter.parameterName}~${dat[i].weatherElement[1].time[2].parameter.parameterName}
+                </td>
+
+                </tr>
+                `;
+            }        
+            $("tbody").html(p);
+        })
+    </script>
+</body>
+</html>
